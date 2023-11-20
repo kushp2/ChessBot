@@ -10,7 +10,7 @@ public class BoardUtils {
     private BoardUtils() {
     }
     
-    private static boolean isValidTileCoordinate(int coordinate){
+    /*private static boolean isValidTileCoordinate(int coordinate){
         return coordinate >= 0 && coordinate < 64;
-    }
+    }*/
 }
