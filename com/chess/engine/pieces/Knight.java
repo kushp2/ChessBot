@@ -8,11 +8,13 @@ import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
+import com.chess.engine.board.Move.AttackMove;
+import com.chess.engine.board.Move.MajorMove;
 import com.chess.engine.board.Tile;
 
 public class Knight extends Piece
 {
-    //all the legal moves a knight can make
+    //all the legal moves a knight can make (adds these values to the knight's current coordinate to get the possible destination coordinates)
     private final static int[] CANDIDATE_MOVE_COORDINATES = {-17, -15, -10, -6, 6, 10, 15, 17};
 
     Knight(final int piecePosition, final Alliance pieceAlliance) {
@@ -20,18 +22,20 @@ public class Knight extends Piece
     }
 
     @Override
-    public Collection<Move> calculateLegalMoves(Board board) 
+    public Collection<Move> calculateLegalMoves(final Board board) 
     {
         
         //variables
         int candidateDestinationCoordinate;                                                                //holds the destination coordinates
-        final List<Move> legalMoves = new ArrayList<>();
+        final List<Move> legalMoves = new ArrayList<>();                                                   //holds the legal moves
 
+        //for every move the knight can make
         for (final int currentCandidateOffset : CANDIDATE_MOVE_COORDINATES)
         {
+            //checks to see if the move is valid
             candidateDestinationCoordinate = this.piecePosition + currentCandidateOffset;
 
-            if (true /*isvalidtileCoordinate*/)
+            if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate))
             {
                 // if  the move is on an edge case
                 if (isFirstColumnExclusion(this.piecePosition, currentCandidateOffset) || 
@@ -43,16 +47,16 @@ public class Knight extends Piece
                 
                 final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
 
-                //if it is not occupied, add to leagal moves, else check for alliance
+                //if it is not occupied, add to leagal moves, else check for alliance (if the piece is black or white)
                 if (!candidateDestinationTile.isTileOccupied()){
-                    legalMoves.add(new Move());
+                    legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
                 } else{
                     final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                     final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
 
                     //adds a legal move is opponent is on the destination tile
                     if (this.pieceAlliance != pieceAlliance){
-                        legalMoves.add(new Move());
+                        legalMoves.add(new AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
                     }
                 }//end if else
             }//end if the move is valid
