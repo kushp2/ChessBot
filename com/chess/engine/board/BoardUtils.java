@@ -10,6 +10,10 @@ public class BoardUtils {
     public static final int NUM_TILES = 64;                                             //Total number of tiles on the board
     public static final int NUM_TILES_PER_ROW = 8;
 
+    //TODO more work needed here!!!
+    public static final boolean[] SECOND_ROW = null;                                    //holds the rows
+    public static final boolean[] SEVENTH_ROW = null;
+
     private BoardUtils() {
         throw new RuntimeException("You cannot instantiate me!");
     }
